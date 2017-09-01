@@ -37,11 +37,26 @@ class Blockchain{
         newBlock.hash=newBlock.calculateHash();
         this.chain.push(newBlock);
     }
-
+    
+    isChainvalid(){
+        for(let i = 1; i < this.chain.length; i++){
+            const currentBlock = this.chain[i];
+            const previousBlock = this.chain[i - 1];
+            
+            if(currentBlock.hash !== currentBlock.calculateHash()){
+                return false;
+            }
+            
+            if(currentBlock.prevHash !== previousBlock.hash){
+                return false;
+            }
+        }
+        return true;
+    }
 }
-
 let LeonCoin = new Blockchain();
 LeonCoin.addBlock(new Block("01/09/2017",{amount: 7}))
 LeonCoin.addBlock(new Block("02/09/2017",{amount: 2}))
 
-console.log(JSON.stringify(LeonCoin, null,4));
+console.log('is blockchain valid?' + LeonCoin.isChainvalid());
+//console.log(JSON.stringify(LeonCoin, null,4));
